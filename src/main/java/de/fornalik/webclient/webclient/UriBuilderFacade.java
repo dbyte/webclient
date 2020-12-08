@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
@@ -54,7 +55,7 @@ public class UriBuilderFacade {
         .build();
   }
 
-  private org.springframework.web.util.UriBuilder processPreBuild() {
+  private UriBuilder processPreBuild() {
     return uriBuilderFactory.builder()
         .scheme("https")
         .host(host)
