@@ -1,7 +1,7 @@
 package de.fornalik.webclient.webclient;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,21 +10,12 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourhoodRequest {
-  private static final Logger LOGGER = LoggerFactory
-      .getLogger(TankerkoenigNeighbourhoodRequest.class);
 
-  private final String petrolStationApiKey;
   private final UriBuilderFacade uriBuilderFacade;
-
-  @Autowired
-  public TankerkoenigNeighbourhoodRequest(
-      UriBuilderFacade uriBuilderFacade,
-      @Value("${app.webclient.apikey.petrolstations:}") String petrolStationApiKey) {
-
-    this.petrolStationApiKey = petrolStationApiKey;
-    this.uriBuilderFacade = uriBuilderFacade;
-  }
+  @Autowired @Value("${app.webclient.apikey.petrolstations:}") private String petrolStationApiKey;
 
   @PostConstruct
   private void init() {
@@ -33,7 +24,7 @@ public class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourh
 
   private void setDefaultParams() {
     if (petrolStationApiKey.isEmpty()) {
-      LOGGER.error("API key missing. Check providing one via property or environment variable "
+      log.error("API key missing. Check providing one via property or environment variable "
           + "'app.webclient.apikey.petrolstations'");
     }
 

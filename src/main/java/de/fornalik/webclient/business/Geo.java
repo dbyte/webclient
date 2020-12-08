@@ -1,60 +1,29 @@
 package de.fornalik.webclient.business;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.StringJoiner;
-
 @Component
 @Scope("prototype")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(staticName = "of")
+@Data
 public class Geo {
 
-  private Double latitude;
-  private Double longitude;
+  private final double latitude;
+  private final double longitude;
+
+  /**
+   * Distance relative to some other point of interest, may it be an address or a second geo
+   * location. Explicitly null if no relation needed.
+   */
   private Double distance;
 
-  private Geo() {
-  }
-
-  public Geo(Double latitude, Double longitude, Double distance) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.distance = distance;
-  }
-
-  @JsonCreator
-  public static Geo createNullGeo() {
-    return new Geo();
-  }
-
-  @JsonCreator
-  public static Geo createGeo(
-      @JsonProperty("lat") Double latitude,
-      @JsonProperty("lng") Double longitude,
-      @JsonProperty("dist") Double distance) {
+  public static Geo of(double latitude, double longitude, double distance) {
     return new Geo(latitude, longitude, distance);
-  }
-
-  public Double getLatitude() {
-    return latitude;
-  }
-
-  public Double getLongitude() {
-    return longitude;
-  }
-
-  public Double getDistance() {
-    return distance;
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", Geo.class.getSimpleName() + "[", "]")
-        .add("latitude=" + latitude)
-        .add("longitude=" + longitude)
-        .add("distance=" + distance)
-        .toString();
   }
 }

@@ -5,20 +5,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fornalik.webclient.business.PetrolStation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Objects;
 
+@RequiredArgsConstructor
 public class TankerkoenigNeighbourhoodResponseMapper
     implements Converter<String, Flux<PetrolStation>> {
 
   private final ObjectMapper mapper;
-
-  public TankerkoenigNeighbourhoodResponseMapper(ObjectMapper mapper) {
-    this.mapper = mapper;
-  }
 
   @Override
   public Flux<PetrolStation> convert(String json) {

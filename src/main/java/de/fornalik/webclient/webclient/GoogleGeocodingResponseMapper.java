@@ -5,19 +5,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fornalik.webclient.business.Geo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+@RequiredArgsConstructor
 public class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
 
   private final ObjectMapper mapper;
-
-  public GoogleGeocodingResponseMapper(ObjectMapper mapper) {
-    this.mapper = mapper;
-  }
 
   @Override
   public Mono<Geo> convert(String json) {
@@ -66,8 +64,7 @@ public class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo
     @JsonProperty("geometry") private GeometryDto geometryDto;
 
     private Geo getAsGeo() {
-      return Geo
-          .createGeo(geometryDto.locationDto.latitude, geometryDto.locationDto.longitude, null);
+      return Geo.of(geometryDto.locationDto.latitude, geometryDto.locationDto.longitude);
     }
 
     /**

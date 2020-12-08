@@ -6,29 +6,20 @@ import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
 import de.fornalik.webclient.service.GeocodingClientService;
 import de.fornalik.webclient.service.PetrolStationClientService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.SignalType;
 
 import java.io.InputStream;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class MainController {
-  private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
   private final PetrolStationClientService petrolStationClientService;
   private final GeocodingClientService geocodingClientService;
-
-  @Autowired
-  public MainController(
-      PetrolStationClientService petrolStationClientService,
-      GeocodingClientService geocodingClientService) {
-
-    this.petrolStationClientService = petrolStationClientService;
-    this.geocodingClientService = geocodingClientService;
-  }
 
   public void doRequestPetrolStations(Geo geo) {
     petrolStationClientService
@@ -38,7 +29,7 @@ public class MainController {
             this::onReceivedPetrolStation,
             Throwable::printStackTrace);
 
-    LOGGER.debug("************* ASYNC PS *************");
+    log.debug("************* ASYNC PS *************");
   }
 
   public void doRequestGeoLocation(Address address) {
@@ -49,21 +40,21 @@ public class MainController {
             this::onReceivedGeoLocation,
             Throwable::printStackTrace);
 
-    LOGGER.debug("************* ASYNC GEO *************");
+    log.debug("************* ASYNC GEO *************");
   }
 
   private void onReceivedPetrolStation(PetrolStation petrolStation) {
-    LOGGER.debug("************* RESULT PS *************");
-    LOGGER.debug(petrolStation.toString());
+    log.debug("************* RESULT PS *************");
+    log.debug(petrolStation.toString());
   }
 
   private void onReceivedGeoLocation(Geo geo) {
-    LOGGER.debug("************* RESULT GEO *************");
-    LOGGER.debug(geo.toString());
+    log.debug("************* RESULT GEO *************");
+    log.debug(geo.toString());
   }
 
   private void onCompleted(SignalType signalType) {
-    LOGGER.debug("************* COMPLETED with signal: {} *************", signalType);
+    log.debug("************* COMPLETED with signal: {} *************", signalType);
   }
 
   private String readJsonTest() {

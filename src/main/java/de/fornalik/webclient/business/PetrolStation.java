@@ -10,10 +10,10 @@ import java.util.StringJoiner;
 @Component
 @Scope("prototype")
 public class PetrolStation {
-  private final Address address;
   @JsonProperty("id") private String id;
   @JsonProperty("brand") private String brand;
   @JsonProperty("isOpen") private Boolean isOpen;
+  private Address address;
 
   @JsonProperty("diesel") private Double diesel;
   @JsonProperty("e5") private Double e5;
@@ -21,24 +21,28 @@ public class PetrolStation {
 
   @Autowired
   public PetrolStation() {
-    this(new Address());
+    //this(new Address());
   }
 
-  @Autowired
+  /*@Autowired
   public PetrolStation(Address address) {
     this.address = address;
-  }
+  }*/
 
   public String getBrand() {
     return brand;
   }
 
-  @JsonProperty("name")
+  /*@JsonProperty("name")
+  private void setAdrName(String name) {
+    this.addressBuilder.name(name);
+  }*/
+  /*@JsonProperty("name")
   private void setAdrName(String name) {
     this.address.setName(name);
-  }
+  }*/
 
-  @JsonProperty("street")
+  /*@JsonProperty("street")
   private void setAdrStreet(String street) {
     this.address.setStreet(street);
   }
@@ -56,7 +60,7 @@ public class PetrolStation {
   @JsonProperty("postCode")
   private void setAdrPostCode(String postCode) {
     this.address.setPostCode(postCode);
-  }
+  }*/
 
   @JsonProperty("lat")
   private void setGeoLatitude(Double lat) {

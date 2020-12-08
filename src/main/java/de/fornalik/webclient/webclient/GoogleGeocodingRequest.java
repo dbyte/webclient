@@ -1,7 +1,7 @@
 package de.fornalik.webclient.webclient;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +13,9 @@ import java.util.Objects;
 
 @Component
 @Qualifier("geocodingRequest")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class GoogleGeocodingRequest implements AddressRequest {
-  private static final Logger LOGGER = LoggerFactory.getLogger(GoogleGeocodingRequest.class);
 
   private static final String STREET_KEY = "street";
   private static final String HOUSENUMBER_KEY = "houseNumber";
@@ -23,17 +24,8 @@ public class GoogleGeocodingRequest implements AddressRequest {
   private static final String REGION_KEY = "region";
   private static final String APIKEY_KEY = "key";
 
-  private final String googleGeocodingApiKey;
+  @Value("${app.webclient.apikey.geocoding:}") private String googleGeocodingApiKey;
   private final UriBuilderFacade uriBuilderFacade;
-
-  @Autowired
-  public GoogleGeocodingRequest(
-      UriBuilderFacade uriBuilderFacade,
-      @Value("${app.webclient.apikey.geocoding:}") String googleGeocodingApiKey) {
-
-    this.googleGeocodingApiKey = googleGeocodingApiKey;
-    this.uriBuilderFacade = uriBuilderFacade;
-  }
 
   @PostConstruct
   private void init() {
@@ -42,7 +34,7 @@ public class GoogleGeocodingRequest implements AddressRequest {
 
   private void setDefaultParams() {
     if (googleGeocodingApiKey.isEmpty()) {
-      LOGGER.error("API key missing. Check providing one via property or environment variable "
+      log.error("API key missing. Check providing one via property or environment variable "
           + "'app.webclient.apikey.geocoding'");
     }
 

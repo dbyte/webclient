@@ -1,9 +1,10 @@
 package de.fornalik.webclient.webclient;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriBuilderFactory;
 
@@ -13,18 +14,13 @@ import java.util.Objects;
 
 @Component
 @Scope("prototype")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UriBuilderFacade {
 
   private final MultiValueMap<String, String> parameterMap;
   private final UriBuilderFactory uriBuilderFactory;
   private String host;
   private String basePath;
-
-  @Autowired
-  public UriBuilderFacade(UriBuilderFactory uriBuilderFactory) {
-    this.uriBuilderFactory = uriBuilderFactory;
-    this.parameterMap = new LinkedMultiValueMap<>();
-  }
 
   UriBuilderFacade setHost(String host) {
     this.host = Objects.requireNonNull(host, "host must not be null");
