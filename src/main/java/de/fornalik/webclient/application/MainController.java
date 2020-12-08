@@ -42,7 +42,7 @@ public class MainController {
   private String readJsonTest() {
     // The class loader that loaded the class
     ClassLoader classLoader = SpringWebclientApplication.class.getClassLoader();
-    InputStream inputStream = classLoader.getResourceAsStream("responseFixture.json");
+    InputStream inputStream = classLoader.getResourceAsStream("tankerkoenig_ok_response.json");
 
     // The stream holding the file content
     if (inputStream == null) {
