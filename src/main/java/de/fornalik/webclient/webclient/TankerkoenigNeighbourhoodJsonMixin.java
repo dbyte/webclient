@@ -7,11 +7,11 @@ import de.fornalik.webclient.business.Geo;
 
 abstract class TankerkoenigNeighbourhoodJsonMixin {
 
-  @JsonUnwrapped Address address;
-  @JsonUnwrapped Geo geo;
+  @JsonUnwrapped private Address address;
+  @JsonUnwrapped private Geo geo;
 
   @SuppressWarnings("unused")
-  TankerkoenigNeighbourhoodJsonMixin(
+  private TankerkoenigNeighbourhoodJsonMixin(
       @JsonProperty("id") String id,
       @JsonProperty("brand") String brand,
       @JsonProperty("isOpen") Boolean isOpen,
@@ -20,7 +20,7 @@ abstract class TankerkoenigNeighbourhoodJsonMixin {
       @JsonProperty("e10") Double e10) {}
 
   @SuppressWarnings("unused")
-  TankerkoenigNeighbourhoodJsonMixin(
+  private TankerkoenigNeighbourhoodJsonMixin(
       @JsonProperty("name") String name,
       @JsonProperty("street") String street,
       @JsonProperty("houseNumber") String houseNumber,
@@ -28,7 +28,7 @@ abstract class TankerkoenigNeighbourhoodJsonMixin {
       @JsonProperty("postCode") String postCode) {}
 
   @SuppressWarnings("unused")
-  TankerkoenigNeighbourhoodJsonMixin(
+  private TankerkoenigNeighbourhoodJsonMixin(
       @JsonProperty("lat") double latitude,
       @JsonProperty("lng") double longitude,
       @JsonProperty("dist") Double distance) {}
