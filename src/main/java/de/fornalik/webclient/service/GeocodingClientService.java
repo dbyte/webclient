@@ -3,6 +3,7 @@ package de.fornalik.webclient.service;
 import de.fornalik.webclient.business.Address;
 import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.webclient.AddressRequest;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
@@ -29,6 +30,7 @@ public class GeocodingClientService {
     this.jsonConverter = geocodingResponseMapper;
   }
 
+  @NonNull
   private WebClient createWebClient(WebClient.Builder clientBuilder) {
     return clientBuilder
         .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +38,7 @@ public class GeocodingClientService {
         .build();
   }
 
+  @NonNull
   public Mono<Geo> getGeoLocationForAddress(Address a) {
     request.setAddressLocation(a.getStreet(), a.getHouseNumber(), a.getCity(), a.getPostCode());
 

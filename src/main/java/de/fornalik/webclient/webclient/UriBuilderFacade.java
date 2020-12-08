@@ -1,8 +1,8 @@
 package de.fornalik.webclient.webclient;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
@@ -22,27 +22,27 @@ public class UriBuilderFacade {
   private String host;
   private String basePath;
 
-  UriBuilderFacade setHost(String host) {
+  UriBuilderFacade setHost(@NonNull String host) {
     this.host = Objects.requireNonNull(host, "host must not be null");
     return this;
   }
 
-  UriBuilderFacade setBasePath(String basePath) {
+  UriBuilderFacade setBasePath(@NonNull String basePath) {
     this.basePath = Objects.requireNonNull(basePath, "basePath must not be null");
     return this;
   }
 
-  UriBuilderFacade putKeyWithSingleValue(String key, String value) {
+  UriBuilderFacade putKeyWithSingleValue(@NonNull String key, @NonNull String value) {
     parameterMap.put(key, List.of(value));
     return this;
   }
 
-  UriBuilderFacade putKeyWithSingleValue(String key, double value) {
+  UriBuilderFacade putKeyWithSingleValue(@NonNull String key, double value) {
     parameterMap.put(key, List.of(String.valueOf(value)));
     return this;
   }
 
-  URI build(String template) {
+  URI build(@NonNull String template) {
     return processPreBuild()
         .query(template)
         .build(parameterMap.toSingleValueMap());

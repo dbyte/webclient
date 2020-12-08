@@ -3,6 +3,7 @@ package de.fornalik.webclient.service;
 import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
 import de.fornalik.webclient.webclient.PetrolStationNeighbourhoodRequest;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ public class PetrolStationClientService {
     this.jsonConverter = petrolStationsNeighbourhoodResponseMapper;
   }
 
+  @NonNull
   private WebClient createWebClient(WebClient.Builder clientBuilder) {
     return clientBuilder
         .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +37,7 @@ public class PetrolStationClientService {
         .build();
   }
 
+  @NonNull
   public Flux<PetrolStation> getPetrolStationsInNeighbourhood(Geo geo) {
     request.setGeoLocation(geo.getLatitude(), geo.getLongitude());
     request.setDistance(geo.getDistance());

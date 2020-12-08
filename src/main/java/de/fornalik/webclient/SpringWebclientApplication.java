@@ -24,12 +24,10 @@ public class SpringWebclientApplication {
     MainController mainController = context.getBean(MainController.class);
 
     // Request Petrol Station Webservice
-    Flux<PetrolStation> petrolStationFlux = mainController
-        .findPetrolStations(demoData.getT1());
+    Flux<PetrolStation> petrolStationFlux = mainController.findPetrolStations(demoData.getT1());
 
     // Request Geocoding Webservice
-    Mono<Geo> geoMono = mainController
-        .findGeoLocation(demoData.getT2());
+    Mono<Geo> geoMono = mainController.findGeoLocation(demoData.getT2());
 
     // Shutdown after both streams have terminated.
     Flux.concat(petrolStationFlux, geoMono)

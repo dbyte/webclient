@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fornalik.webclient.business.PetrolStation;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import reactor.core.publisher.Flux;
@@ -19,6 +20,7 @@ public class TankerkoenigNeighbourhoodResponseMapper
   private final ObjectMapper mapper;
 
   @Override
+  @NonNull
   public Flux<PetrolStation> convert(String json) {
     Dto dto;
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

@@ -1,5 +1,6 @@
 package de.fornalik.webclient.service;
 
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
@@ -12,7 +13,7 @@ public class ClientServiceSupport {
 
   private ClientServiceSupport() {}
 
-  static Mono<String> processRawResponse(ClientResponse response) {
+  static Mono<String> processRawResponse(@NonNull ClientResponse response) {
     HttpStatus statusCode = response.statusCode();
 
     if (statusCode.equals(HttpStatus.OK)) {

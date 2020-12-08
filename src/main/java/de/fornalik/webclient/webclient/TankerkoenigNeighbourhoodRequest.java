@@ -1,5 +1,6 @@
 package de.fornalik.webclient.webclient;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourh
   }
 
   @Override
+  @NonNull
   public void setAddressLocation(
       String street, String houseNumber, String city, String postCode) {
     throw new UnsupportedOperationException("Method not implemented");

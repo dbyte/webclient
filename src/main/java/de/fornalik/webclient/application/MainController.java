@@ -6,6 +6,7 @@ import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
 import de.fornalik.webclient.service.GeocodingClientService;
 import de.fornalik.webclient.service.PetrolStationClientService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ public class MainController {
   private final PetrolStationClientService petrolStationClientService;
   private final GeocodingClientService geocodingClientService;
 
-  public Flux<PetrolStation> findPetrolStations(Geo geo) {
+  public Flux<PetrolStation> findPetrolStations(@NonNull Geo geo) {
     return petrolStationClientService
         .getPetrolStationsInNeighbourhood(geo)
         .doOnNext(petrolStation -> log.debug(petrolStation.toString()))
@@ -30,7 +31,7 @@ public class MainController {
             .debug("************* COMPLETED STATIONS signal: {} *************", signal));
   }
 
-  public Mono<Geo> findGeoLocation(Address address) {
+  public Mono<Geo> findGeoLocation(@NonNull Address address) {
     return geocodingClientService
         .getGeoLocationForAddress(address)
         .doOnNext(geo -> log.debug(geo.toString()))
