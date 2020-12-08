@@ -9,7 +9,8 @@ import de.fornalik.webclient.service.PetrolStationClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import reactor.core.publisher.SignalType;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 
@@ -21,40 +22,20 @@ public class MainController {
   private final PetrolStationClientService petrolStationClientService;
   private final GeocodingClientService geocodingClientService;
 
-  public void doRequestPetrolStations(Geo geo) {
-    petrolStationClientService
+  public Flux<PetrolStation> findPetrolStations(Geo geo) {
+    return petrolStationClientService
         .getPetrolStationsInNeighbourhood(geo)
-        .doFinally(this::onCompleted)
-        .subscribe(
-            this::onReceivedPetrolStation,
-            Throwable::printStackTrace);
-
-    log.debug("************* ASYNC PS *************");
+        .doOnNext(petrolStation -> log.debug(petrolStation.toString()))
+        .doFinally(signal -> log
+            .debug("************* COMPLETED STATIONS signal: {} *************", signal));
   }
 
-  public void doRequestGeoLocation(Address address) {
-    geocodingClientService
+  public Mono<Geo> findGeoLocation(Address address) {
+    return geocodingClientService
         .getGeoLocationForAddress(address)
-        .doFinally(this::onCompleted)
-        .subscribe(
-            this::onReceivedGeoLocation,
-            Throwable::printStackTrace);
-
-    log.debug("************* ASYNC GEO *************");
-  }
-
-  private void onReceivedPetrolStation(PetrolStation petrolStation) {
-    log.debug("************* RESULT PS *************");
-    log.debug(petrolStation.toString());
-  }
-
-  private void onReceivedGeoLocation(Geo geo) {
-    log.debug("************* RESULT GEO *************");
-    log.debug(geo.toString());
-  }
-
-  private void onCompleted(SignalType signalType) {
-    log.debug("************* COMPLETED with signal: {} *************", signalType);
+        .doOnNext(geo -> log.debug(geo.toString()))
+        .doFinally(signal -> log
+            .debug("************* COMPLETED GEO signal: {} *************", signal));
   }
 
   private String readJsonTest() {
