@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.fornalik.webclient.business.Address;
+import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,9 @@ public class TankerkoenigNeighbourhoodResponseMapper
   public Flux<PetrolStation> convert(String json) {
     Dto dto;
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.addMixIn(PetrolStation.class, TankerkoenigNeighbourhoodJsonMixin.class);
+    mapper.addMixIn(Address.class, TankerkoenigNeighbourhoodJsonMixin.class);
+    mapper.addMixIn(Geo.class, TankerkoenigNeighbourhoodJsonMixin.class);
 
     try {
       dto = mapper.readValue(Objects.requireNonNull(json), Dto.class);
