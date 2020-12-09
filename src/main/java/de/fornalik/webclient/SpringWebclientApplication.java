@@ -1,11 +1,11 @@
 package de.fornalik.webclient;
 
 import de.fornalik.webclient.application.MainController;
-import de.fornalik.webclient.business.Address;
-import de.fornalik.webclient.business.Geo;
-import de.fornalik.webclient.business.PetrolStation;
-import de.fornalik.webclient.service.PetrolStationMessageContentAdapter;
-import de.fornalik.webclient.webclient.MessageContent;
+import de.fornalik.webclient.location.address.Address;
+import de.fornalik.webclient.location.address.Geo;
+import de.fornalik.webclient.messaging.common.MessageContent;
+import de.fornalik.webclient.petrolstation.data.PetrolStation;
+import de.fornalik.webclient.petrolstation.messaging.PetrolStationMessageContentAdapter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;

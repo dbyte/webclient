@@ -1,13 +1,13 @@
 package de.fornalik.webclient.application;
 
 import de.fornalik.webclient.SpringWebclientApplication;
-import de.fornalik.webclient.business.Address;
-import de.fornalik.webclient.business.Geo;
-import de.fornalik.webclient.business.PetrolStation;
-import de.fornalik.webclient.service.GeocodingClientService;
-import de.fornalik.webclient.service.PetrolStationClientService;
-import de.fornalik.webclient.service.PushoverMessageClientService;
-import de.fornalik.webclient.webclient.MessageContent;
+import de.fornalik.webclient.location.address.Address;
+import de.fornalik.webclient.location.address.Geo;
+import de.fornalik.webclient.location.geocoding.GeocodingClientService;
+import de.fornalik.webclient.messaging.common.MessageContent;
+import de.fornalik.webclient.messaging.pushover.PushoverMessageClientService;
+import de.fornalik.webclient.petrolstation.data.PetrolStation;
+import de.fornalik.webclient.petrolstation.pricing.PetrolStationClientService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
