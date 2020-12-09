@@ -2,7 +2,7 @@ package de.fornalik.webclient.messaging.pushover;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fornalik.webclient.application.webclient.UriBuilderFacade;
+import de.fornalik.webclient.application.webclient.RequestBag;
 import de.fornalik.webclient.messaging.common.MessageContent;
 import de.fornalik.webclient.messaging.common.MessageRequest;
 import lombok.NonNull;
@@ -20,7 +20,7 @@ import java.net.URI;
 @Slf4j
 final class PushoverMessageRequest implements MessageRequest {
 
-  @NonNull private final UriBuilderFacade uriBuilderFacade;
+  @NonNull private final RequestBag requestBag;
   @NonNull private final ObjectMapper bodyMapper;
   @Value("${app.webclient.apikey.pushover:}") private String pushoverApiKey;
   @Value("${app.webclient.userId.pushover:}") private String pushoverUserId;
@@ -43,7 +43,7 @@ final class PushoverMessageRequest implements MessageRequest {
   }
 
   private void setDefaultParams() {
-    uriBuilderFacade
+    requestBag
         .setHost("api.pushover.net")
         .setBasePath("/1/messages.json")
         .putKeyWithSingleValue("token", pushoverApiKey)
@@ -52,7 +52,7 @@ final class PushoverMessageRequest implements MessageRequest {
 
   @Override
   public void setMessage(MessageContent content) {
-    uriBuilderFacade
+    requestBag
         .putKeyWithSingleValue("title", content.getTitle())
         .putKeyWithSingleValue("message", content.getMessage());
   }
@@ -60,7 +60,7 @@ final class PushoverMessageRequest implements MessageRequest {
   @Override
   public String getBody() {
     try {
-      return bodyMapper.writeValueAsString(uriBuilderFacade.getFlattenedParameterMap());
+      return bodyMapper.writeValueAsString(requestBag.getFlattenedParameterMap());
     }
     catch (JsonProcessingException ex) {
       throw new RuntimeException("Request map could not be converted to JSON string.");
@@ -69,6 +69,6 @@ final class PushoverMessageRequest implements MessageRequest {
 
   @Override
   public URI getUri() {
-    return uriBuilderFacade.buildParameterless();
+    return requestBag.buildParameterlessUri();
   }
 }

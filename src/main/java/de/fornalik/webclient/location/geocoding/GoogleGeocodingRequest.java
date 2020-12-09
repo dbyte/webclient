@@ -1,6 +1,6 @@
 package de.fornalik.webclient.location.geocoding;
 
-import de.fornalik.webclient.application.webclient.UriBuilderFacade;
+import de.fornalik.webclient.application.webclient.RequestBag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ final class GoogleGeocodingRequest implements AddressRequest {
   private static final String APIKEY_KEY = "key";
 
   @Value("${app.webclient.apikey.geocoding:}") private String googleGeocodingApiKey;
-  @NonNull private final UriBuilderFacade uriBuilderFacade;
+  @NonNull private final RequestBag requestBag;
 
   @PostConstruct
   private void init() {
@@ -39,7 +39,7 @@ final class GoogleGeocodingRequest implements AddressRequest {
           + "'app.webclient.apikey.geocoding'");
     }
 
-    uriBuilderFacade
+    requestBag
         .setHost("maps.googleapis.com")
         .setBasePath("/maps/api/geocode/json")
         .putKeyWithSingleValue(REGION_KEY, "de")
@@ -55,7 +55,7 @@ final class GoogleGeocodingRequest implements AddressRequest {
   @Override
   @NonNull
   public void setAddressLocation(String street, String houseNumber, String city, String postCode) {
-    uriBuilderFacade
+    requestBag
         .putKeyWithSingleValue(STREET_KEY, street)
         .putKeyWithSingleValue(HOUSENUMBER_KEY, houseNumber)
         .putKeyWithSingleValue(CITY_KEY, city)
@@ -64,6 +64,6 @@ final class GoogleGeocodingRequest implements AddressRequest {
 
   @Override
   public URI getUri() {
-    return uriBuilderFacade.build(getQueryTemplate());
+    return requestBag.buildUri(getQueryTemplate());
   }
 }

@@ -1,6 +1,6 @@
 package de.fornalik.webclient.petrolstation.pricing;
 
-import de.fornalik.webclient.application.webclient.UriBuilderFacade;
+import de.fornalik.webclient.application.webclient.RequestBag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.net.URI;
 @Slf4j
 final class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourhoodRequest {
 
-  @NonNull private final UriBuilderFacade uriBuilderFacade;
+  @NonNull private final RequestBag requestBag;
   @Autowired @Value("${app.webclient.apikey.petrolstations:}") private String petrolStationApiKey;
 
   @PostConstruct
@@ -30,7 +30,7 @@ final class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourho
           + "'app.webclient.apikey.petrolstations'");
     }
 
-    uriBuilderFacade
+    requestBag
         .setHost("creativecommons.tankerkoenig.de")
         .setBasePath("/json/list.php")
         .putKeyWithSingleValue("sort", "dist")
@@ -40,19 +40,19 @@ final class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourho
 
   @Override
   public URI getUri() {
-    return uriBuilderFacade.build();
+    return requestBag.buildUri();
   }
 
   @Override
   public void setGeoLocation(double lat, double lng) {
-    uriBuilderFacade
+    requestBag
         .putKeyWithSingleValue("lat", lat)
         .putKeyWithSingleValue("lng", lng);
   }
 
   @Override
   public void setDistance(double searchRadius) {
-    uriBuilderFacade.putKeyWithSingleValue("rad", searchRadius);
+    requestBag.putKeyWithSingleValue("rad", searchRadius);
   }
 
   @Override

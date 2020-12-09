@@ -13,10 +13,13 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Facade which helps composing GET/POST request data.
+ */
 @Component
 @Scope("prototype")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public final class UriBuilderFacade {
+public final class RequestBag {
 
   @NonNull private final MultiValueMap<String, String> parameterMap;
   @NonNull private final UriBuilderFactory uriBuilderFactory;
@@ -27,39 +30,39 @@ public final class UriBuilderFacade {
     return parameterMap.toSingleValueMap();
   }
 
-  public UriBuilderFacade setHost(@NonNull String host) {
+  public RequestBag setHost(@NonNull String host) {
     this.host = host;
     return this;
   }
 
-  public UriBuilderFacade setBasePath(@NonNull String basePath) {
+  public RequestBag setBasePath(@NonNull String basePath) {
     this.basePath = basePath;
     return this;
   }
 
-  public UriBuilderFacade putKeyWithSingleValue(@NonNull String key, @NonNull String value) {
+  public RequestBag putKeyWithSingleValue(@NonNull String key, @NonNull String value) {
     parameterMap.put(key, List.of(value));
     return this;
   }
 
-  public UriBuilderFacade putKeyWithSingleValue(@NonNull String key, double value) {
+  public RequestBag putKeyWithSingleValue(@NonNull String key, double value) {
     parameterMap.put(key, List.of(String.valueOf(value)));
     return this;
   }
 
-  public URI build(@NonNull String template) {
+  public URI buildUri(@NonNull String template) {
     return computeBaseUri()
         .query(template)
         .build(getFlattenedParameterMap());
   }
 
-  public URI build() {
+  public URI buildUri() {
     return computeBaseUri()
         .queryParams(parameterMap)
         .build();
   }
 
-  public URI buildParameterless() {
+  public URI buildParameterlessUri() {
     return computeBaseUri().build();
   }
 
