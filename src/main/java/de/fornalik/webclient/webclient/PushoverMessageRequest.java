@@ -17,6 +17,7 @@ import java.net.URI;
 class PushoverMessageRequest implements MessageRequest {
 
   private final UriBuilderFacade uriBuilderFacade;
+  private final ObjectMapper bodyMapper;
   @Value("${app.webclient.apikey.pushover:}") private String pushoverApiKey;
   @Value("${app.webclient.userId.pushover:}") private String pushoverUserId;
 
@@ -54,9 +55,8 @@ class PushoverMessageRequest implements MessageRequest {
 
   @Override
   public String getBody() {
-    ObjectMapper mapper = new ObjectMapper();
     try {
-      return mapper.writeValueAsString(uriBuilderFacade.getParameterMap().toSingleValueMap());
+      return bodyMapper.writeValueAsString(uriBuilderFacade.getParameterMap().toSingleValueMap());
     }
     catch (JsonProcessingException ex) {
       throw new RuntimeException("Request map could not be converted to JSON string.");
