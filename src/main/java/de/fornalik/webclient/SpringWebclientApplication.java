@@ -4,14 +4,14 @@ import de.fornalik.webclient.application.MainController;
 import de.fornalik.webclient.business.Address;
 import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
+import de.fornalik.webclient.service.PetrolStationMessageContentAdapter;
 import de.fornalik.webclient.webclient.MessageContent;
-import de.fornalik.webclient.webclient.PushoverMessageContent;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple3;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 @SpringBootApplication
@@ -22,7 +22,7 @@ public class SpringWebclientApplication {
         new SpringApplicationBuilder(SpringWebclientApplication.class).run(args);
     context.registerShutdownHook();
 
-    Tuple3<Geo, Address, MessageContent> demoData = createDemoData();
+    Tuple2<Geo, Address> demoData = createDemoData();
     MainController mainController = context.getBean(MainController.class);
 
     // Request Petrol Station Webservice
@@ -34,7 +34,9 @@ public class SpringWebclientApplication {
     Mono<Geo> geoMono = mainController.findGeoLocation(demoData.getT2());
 
     // Request Geocoding Webservice
-    Mono<Void> messageMono = mainController.sendPushoverMessage(demoData.getT3());
+    MessageContent messageContent = PetrolStationMessageContentAdapter
+        .of(petrolStationFlux.blockLast());
+    Mono<Void> messageMono = mainController.sendPushoverMessage(messageContent);
 
     // Shutdown after both streams have terminated.
     Flux.concat(petrolStationFlux, geoMono, messageMono)
@@ -42,7 +44,7 @@ public class SpringWebclientApplication {
         .subscribe(null, Throwable::printStackTrace);
   }
 
-  private static Tuple3<Geo, Address, MessageContent> createDemoData() {
+  private static Tuple2<Geo, Address> createDemoData() {
     Geo geo = Geo.of(52.408306, 10.7720078, 7.0);
 
     Address address = Address.builder()
@@ -52,8 +54,6 @@ public class SpringWebclientApplication {
         .postCode("85567")
         .build();
 
-    MessageContent messageContent = PushoverMessageContent.of("Test ÖÄÜ **<>", "Test Message Body");
-
-    return Tuples.of(geo, address, messageContent);
+    return Tuples.of(geo, address);
   }
 }

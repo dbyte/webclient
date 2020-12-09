@@ -27,17 +27,7 @@ public interface MessageContent {
   String getTitle();
 
   /**
-   * @param s Title of the message.
-   */
-  void setTitle(String s);
-
-  /**
    * @return Main message text.
    */
   String getMessage();
-
-  /**
-   * @param text Main message text.
-   */
-  void setMessage(String text);
 }
