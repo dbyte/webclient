@@ -11,7 +11,6 @@ import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @Scope("prototype")
@@ -28,12 +27,12 @@ class UriBuilderFacade {
   }
 
   UriBuilderFacade setHost(@NonNull String host) {
-    this.host = Objects.requireNonNull(host, "host must not be null");
+    this.host = host;
     return this;
   }
 
   UriBuilderFacade setBasePath(@NonNull String basePath) {
-    this.basePath = Objects.requireNonNull(basePath, "basePath must not be null");
+    this.basePath = basePath;
     return this;
   }
 
