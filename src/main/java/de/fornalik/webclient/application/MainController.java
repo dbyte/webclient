@@ -3,11 +3,11 @@ package de.fornalik.webclient.application;
 import de.fornalik.webclient.SpringWebclientApplication;
 import de.fornalik.webclient.location.address.Address;
 import de.fornalik.webclient.location.address.Geo;
-import de.fornalik.webclient.location.geocoding.GeocodingClientService;
+import de.fornalik.webclient.location.geocoding.GeocodingWebClient;
 import de.fornalik.webclient.messaging.common.MessageContent;
-import de.fornalik.webclient.messaging.pushover.PushoverMessageClientService;
+import de.fornalik.webclient.messaging.pushover.PushoverWebClient;
 import de.fornalik.webclient.petrolstation.data.PetrolStation;
-import de.fornalik.webclient.petrolstation.pricing.PetrolStationClientService;
+import de.fornalik.webclient.petrolstation.pricing.PetrolStationWebClient;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +22,12 @@ import java.io.InputStream;
 @Slf4j
 public class MainController {
 
-  private final PetrolStationClientService petrolStationClientService;
-  private final GeocodingClientService geocodingClientService;
-  private final PushoverMessageClientService pushoverMessageClientService;
+  private final PetrolStationWebClient petrolStationWebClient;
+  private final GeocodingWebClient geocodingWebClient;
+  private final PushoverWebClient pushoverWebClient;
 
   public Flux<PetrolStation> findPetrolStations(@NonNull Geo geo) {
-    return petrolStationClientService
+    return petrolStationWebClient
         .getPetrolStationsInNeighbourhood(geo)
         .doOnNext(petrolStation -> log.debug(petrolStation.toString()))
         .doFinally(signal -> log
@@ -35,7 +35,7 @@ public class MainController {
   }
 
   public Mono<Geo> findGeoLocation(@NonNull Address address) {
-    return geocodingClientService
+    return geocodingWebClient
         .getGeoLocationForAddress(address)
         .doOnNext(geo -> log.debug(geo.toString()))
         .doFinally(signal -> log
@@ -43,7 +43,7 @@ public class MainController {
   }
 
   public Mono<Void> sendPushoverMessage(@NonNull MessageContent content) {
-    return pushoverMessageClientService
+    return pushoverWebClient
         .sendMessage(content)
         .doFinally(signal -> log
             .debug("************* Completed PUSHOVER signal: {} *************", signal));

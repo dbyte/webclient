@@ -1,32 +1,33 @@
-package de.fornalik.webclient.petrolstation.pricing;
+package de.fornalik.webclient.location.geocoding;
 
 import de.fornalik.webclient.application.webclient.WebClientSupport;
+import de.fornalik.webclient.location.address.Address;
 import de.fornalik.webclient.location.address.Geo;
-import de.fornalik.webclient.petrolstation.data.PetrolStation;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
-public class PetrolStationClientService {
+public class GeocodingWebClient {
   @NonNull private final WebClient webClient;
-  @NonNull private final PetrolStationNeighbourhoodRequest request;
-  @NonNull private final Converter<String, Flux<PetrolStation>> jsonConverter;
+  @NonNull private final AddressRequest request;
+  @NonNull private final Converter<String, Mono<Geo>> jsonConverter;
 
   @Autowired
-  public PetrolStationClientService(
+  public GeocodingWebClient(
       WebClient.Builder clientBuilder,
-      PetrolStationNeighbourhoodRequest request,
-      Converter<String, Flux<PetrolStation>> petrolStationsNeighbourhoodResponseMapper) {
+      @Qualifier("geocodingRequest") AddressRequest request,
+      Converter<String, Mono<Geo>> geocodingResponseMapper) {
 
     this.webClient = createWebClient(clientBuilder);
     this.request = request;
-    this.jsonConverter = petrolStationsNeighbourhoodResponseMapper;
+    this.jsonConverter = geocodingResponseMapper;
   }
 
   @NonNull
@@ -38,14 +39,12 @@ public class PetrolStationClientService {
   }
 
   @NonNull
-  public Flux<PetrolStation> getPetrolStationsInNeighbourhood(Geo geo) {
-    request.setGeoLocation(geo.getLatitude(), geo.getLongitude());
-    request.setDistance(geo.getDistance());
+  public Mono<Geo> getGeoLocationForAddress(Address a) {
+    request.setAddressLocation(a.getStreet(), a.getHouseNumber(), a.getCity(), a.getPostCode());
 
     return webClient.get()
         .uri(request.getUri())
         .exchangeToMono(WebClientSupport::processRawResponse)
-        .flux()
         .flatMap(jsonConverter::convert);
   }
 }

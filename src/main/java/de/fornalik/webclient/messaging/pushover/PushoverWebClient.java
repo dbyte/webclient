@@ -16,13 +16,13 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class PushoverMessageClientService {
+public class PushoverWebClient {
   @NonNull private final WebClient webClient;
   @NonNull private final MessageRequest request;
   @NonNull private final Converter<String, Mono<Void>> jsonConverter;
 
   @Autowired
-  public PushoverMessageClientService(
+  public PushoverWebClient(
       WebClient.Builder clientBuilder,
       MessageRequest request,
       Converter<String, Mono<Void>> pushoverMessageResponseMapper) {
