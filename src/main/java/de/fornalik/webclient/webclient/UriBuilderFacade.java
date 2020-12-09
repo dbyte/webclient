@@ -11,6 +11,7 @@ import org.springframework.web.util.UriBuilderFactory;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Scope("prototype")
@@ -22,8 +23,8 @@ class UriBuilderFacade {
   private String host;
   private String basePath;
 
-  MultiValueMap<String, String> getParameterMap() {
-    return parameterMap;
+  Map<String, String> getFlattenedParameterMap() {
+    return parameterMap.toSingleValueMap();
   }
 
   UriBuilderFacade setHost(@NonNull String host) {
@@ -49,7 +50,7 @@ class UriBuilderFacade {
   URI build(@NonNull String template) {
     return computeBaseUri()
         .query(template)
-        .build(parameterMap.toSingleValueMap());
+        .build(getFlattenedParameterMap());
   }
 
   URI build() {

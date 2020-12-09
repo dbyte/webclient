@@ -56,7 +56,7 @@ class PushoverMessageRequest implements MessageRequest {
   @Override
   public String getBody() {
     try {
-      return bodyMapper.writeValueAsString(uriBuilderFacade.getParameterMap().toSingleValueMap());
+      return bodyMapper.writeValueAsString(uriBuilderFacade.getFlattenedParameterMap());
     }
     catch (JsonProcessingException ex) {
       throw new RuntimeException("Request map could not be converted to JSON string.");
