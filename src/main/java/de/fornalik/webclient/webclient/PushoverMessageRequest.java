@@ -2,6 +2,7 @@ package de.fornalik.webclient.webclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import java.net.URI;
 @Slf4j
 class PushoverMessageRequest implements MessageRequest {
 
-  private final UriBuilderFacade uriBuilderFacade;
-  private final ObjectMapper bodyMapper;
+  @NonNull private final UriBuilderFacade uriBuilderFacade;
+  @NonNull private final ObjectMapper bodyMapper;
   @Value("${app.webclient.apikey.pushover:}") private String pushoverApiKey;
   @Value("${app.webclient.userId.pushover:}") private String pushoverUserId;
 

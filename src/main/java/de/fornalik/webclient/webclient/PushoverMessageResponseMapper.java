@@ -11,21 +11,19 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 class PushoverMessageResponseMapper implements Converter<String, Mono<Void>> {
 
-  private final ObjectMapper mapper;
+  @NonNull private final ObjectMapper mapper;
 
   @Override
-  @NonNull
-  public Mono<Void> convert(String json) {
+  public Mono<Void> convert(@NonNull String json) {
     Dto dto;
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     try {
-      dto = mapper.readValue(Objects.requireNonNull(json), Dto.class);
+      dto = mapper.readValue(json, Dto.class);
     }
     catch (JsonProcessingException | IllegalStateException ex) {
       return Mono.error(new RuntimeException(ex.getMessage()));

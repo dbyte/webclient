@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class GeocodingClientService {
-  private final WebClient webClient;
-  private final AddressRequest request;
-  private final Converter<String, Mono<Geo>> jsonConverter;
+  @NonNull private final WebClient webClient;
+  @NonNull private final AddressRequest request;
+  @NonNull private final Converter<String, Mono<Geo>> jsonConverter;
 
   @Autowired
   public GeocodingClientService(

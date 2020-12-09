@@ -18,8 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class UriBuilderFacade {
 
-  private final MultiValueMap<String, String> parameterMap;
-  private final UriBuilderFactory uriBuilderFactory;
+  @NonNull private final MultiValueMap<String, String> parameterMap;
+  @NonNull private final UriBuilderFactory uriBuilderFactory;
   private String host;
   private String basePath;
 

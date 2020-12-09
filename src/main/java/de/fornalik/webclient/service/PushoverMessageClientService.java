@@ -16,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 public class PushoverMessageClientService {
-  private final WebClient webClient;
-  private final MessageRequest request;
-  private final Converter<String, Mono<Void>> jsonConverter;
+  @NonNull private final WebClient webClient;
+  @NonNull private final MessageRequest request;
+  @NonNull private final Converter<String, Mono<Void>> jsonConverter;
 
   @Autowired
   public PushoverMessageClientService(

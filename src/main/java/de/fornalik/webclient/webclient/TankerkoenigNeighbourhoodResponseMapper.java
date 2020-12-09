@@ -13,16 +13,14 @@ import org.springframework.core.convert.converter.Converter;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 class TankerkoenigNeighbourhoodResponseMapper implements Converter<String, Flux<PetrolStation>> {
 
-  private final ObjectMapper mapper;
+  @NonNull private final ObjectMapper mapper;
 
   @Override
-  @NonNull
-  public Flux<PetrolStation> convert(String json) {
+  public Flux<PetrolStation> convert(@NonNull String json) {
     Dto dto;
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     mapper.addMixIn(PetrolStation.class, TankerkoenigNeighbourhoodJsonMixin.class);
@@ -30,7 +28,7 @@ class TankerkoenigNeighbourhoodResponseMapper implements Converter<String, Flux<
     mapper.addMixIn(Geo.class, TankerkoenigNeighbourhoodJsonMixin.class);
 
     try {
-      dto = mapper.readValue(Objects.requireNonNull(json), Dto.class);
+      dto = mapper.readValue(json, Dto.class);
     }
     catch (JsonProcessingException ex) {
       return Flux.error(new RuntimeException(ex.getMessage()));

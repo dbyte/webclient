@@ -14,9 +14,9 @@ import reactor.core.publisher.Flux;
 
 @Service
 public class PetrolStationClientService {
-  private final WebClient webClient;
-  private final PetrolStationNeighbourhoodRequest request;
-  private final Converter<String, Flux<PetrolStation>> jsonConverter;
+  @NonNull private final WebClient webClient;
+  @NonNull private final PetrolStationNeighbourhoodRequest request;
+  @NonNull private final Converter<String, Flux<PetrolStation>> jsonConverter;
 
   @Autowired
   public PetrolStationClientService(

@@ -11,21 +11,19 @@ import org.springframework.core.convert.converter.Converter;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
 
-  private final ObjectMapper mapper;
+  @NonNull private final ObjectMapper mapper;
 
   @Override
-  @NonNull
-  public Mono<Geo> convert(String json) {
+  public Mono<Geo> convert(@NonNull String json) {
     Dto dto;
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     try {
-      dto = mapper.readValue(Objects.requireNonNull(json), Dto.class);
+      dto = mapper.readValue(json, Dto.class);
       return Mono.just(dto.getAsGeo());
     }
     catch (JsonProcessingException | IllegalStateException ex) {

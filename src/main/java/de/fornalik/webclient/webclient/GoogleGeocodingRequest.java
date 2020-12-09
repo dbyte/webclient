@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.util.Objects;
 
 @Component
 @Qualifier("geocodingRequest")
@@ -26,7 +25,7 @@ class GoogleGeocodingRequest implements AddressRequest {
   private static final String APIKEY_KEY = "key";
 
   @Value("${app.webclient.apikey.geocoding:}") private String googleGeocodingApiKey;
-  private final UriBuilderFacade uriBuilderFacade;
+  @NonNull private final UriBuilderFacade uriBuilderFacade;
 
   @PostConstruct
   private void init() {
@@ -56,10 +55,10 @@ class GoogleGeocodingRequest implements AddressRequest {
   @NonNull
   public void setAddressLocation(String street, String houseNumber, String city, String postCode) {
     uriBuilderFacade
-        .putKeyWithSingleValue(STREET_KEY, Objects.requireNonNull(street))
-        .putKeyWithSingleValue(HOUSENUMBER_KEY, Objects.requireNonNull(houseNumber))
-        .putKeyWithSingleValue(CITY_KEY, Objects.requireNonNull(city))
-        .putKeyWithSingleValue(POSTCODE_KEY, Objects.requireNonNull(postCode));
+        .putKeyWithSingleValue(STREET_KEY, street)
+        .putKeyWithSingleValue(HOUSENUMBER_KEY, houseNumber)
+        .putKeyWithSingleValue(CITY_KEY, city)
+        .putKeyWithSingleValue(POSTCODE_KEY, postCode);
   }
 
   @Override
