@@ -15,7 +15,8 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 @RequiredArgsConstructor
-class TankerkoenigNeighbourhoodResponseMapper implements Converter<String, Flux<PetrolStation>> {
+final class TankerkoenigNeighbourhoodResponseMapper
+    implements Converter<String, Flux<PetrolStation>> {
 
   @NonNull private final ObjectMapper mapper;
 

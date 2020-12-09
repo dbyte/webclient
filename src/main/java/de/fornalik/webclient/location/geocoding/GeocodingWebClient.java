@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class GeocodingWebClient {
+public final class GeocodingWebClient {
   @NonNull private final WebClient webClient;
   @NonNull private final AddressRequest request;
   @NonNull private final Converter<String, Mono<Geo>> jsonConverter;

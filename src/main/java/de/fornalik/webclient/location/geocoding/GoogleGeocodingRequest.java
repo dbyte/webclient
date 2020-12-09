@@ -16,7 +16,7 @@ import java.net.URI;
 @Qualifier("geocodingRequest")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-class GoogleGeocodingRequest implements AddressRequest {
+final class GoogleGeocodingRequest implements AddressRequest {
 
   private static final String STREET_KEY = "street";
   private static final String HOUSENUMBER_KEY = "houseNumber";

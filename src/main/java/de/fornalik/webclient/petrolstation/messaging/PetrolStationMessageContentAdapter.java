@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor(staticName = "of")
-public class PetrolStationMessageContentAdapter implements MessageContent {
+public final class PetrolStationMessageContentAdapter implements MessageContent {
 
   @NonNull private final PetrolStation petrolStation;
 

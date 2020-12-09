@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-class PushoverMessageResponseMapper implements Converter<String, Mono<Void>> {
+final class PushoverMessageResponseMapper implements Converter<String, Mono<Void>> {
 
   @NonNull private final ObjectMapper mapper;
 

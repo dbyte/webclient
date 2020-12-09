@@ -14,7 +14,7 @@ import lombok.experimental.NonFinal;
 @RequiredArgsConstructor(staticName = "of", onConstructor = @__(@JsonCreator))
 @Builder
 @Data
-public class PetrolStation {
+public final class PetrolStation {
 
   @NonNull private final String id;
   @NonNull private final String brand;

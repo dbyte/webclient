@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 @Service
-public class PetrolStationWebClient {
+public final class PetrolStationWebClient {
   @NonNull private final WebClient webClient;
   @NonNull private final PetrolStationNeighbourhoodRequest request;
   @NonNull private final Converter<String, Flux<PetrolStation>> jsonConverter;

@@ -20,7 +20,7 @@ import java.io.InputStream;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class MainController {
+public final class MainController {
 
   private final PetrolStationWebClient petrolStationWebClient;
   private final GeocodingWebClient geocodingWebClient;

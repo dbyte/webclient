@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UriBuilderFacade {
+public final class UriBuilderFacade {
 
   @NonNull private final MultiValueMap<String, String> parameterMap;
   @NonNull private final UriBuilderFactory uriBuilderFactory;

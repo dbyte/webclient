@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  * handling.
  */
 @Slf4j
-public class WebClientSupport {
+public final class WebClientSupport {
 
   private WebClientSupport() {}
 

@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
-class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
+final class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
 
   @NonNull private final ObjectMapper mapper;
 

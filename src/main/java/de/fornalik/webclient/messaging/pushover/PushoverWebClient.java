@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class PushoverWebClient {
+public final class PushoverWebClient {
   @NonNull private final WebClient webClient;
   @NonNull private final MessageRequest request;
   @NonNull private final Converter<String, Mono<Void>> jsonConverter;

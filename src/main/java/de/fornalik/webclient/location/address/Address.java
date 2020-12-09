@@ -13,7 +13,7 @@ import lombok.experimental.NonFinal;
 @RequiredArgsConstructor(staticName = "of", onConstructor = @__(@JsonCreator))
 @Builder
 @Data
-public class Address {
+public final class Address {
 
   private final String name;
   @NonNull private final String street;

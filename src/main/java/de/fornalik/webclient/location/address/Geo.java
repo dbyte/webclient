@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(staticName = "of")
 @Data
-public class Geo {
+public final class Geo {
 
   private final double latitude;
   private final double longitude;

@@ -18,7 +18,7 @@ import java.net.URI;
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-class PushoverMessageRequest implements MessageRequest {
+final class PushoverMessageRequest implements MessageRequest {
 
   @NonNull private final UriBuilderFacade uriBuilderFacade;
   @NonNull private final ObjectMapper bodyMapper;
