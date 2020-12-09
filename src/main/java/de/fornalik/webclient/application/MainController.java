@@ -6,6 +6,8 @@ import de.fornalik.webclient.business.Geo;
 import de.fornalik.webclient.business.PetrolStation;
 import de.fornalik.webclient.service.GeocodingClientService;
 import de.fornalik.webclient.service.PetrolStationClientService;
+import de.fornalik.webclient.service.PushoverMessageClientService;
+import de.fornalik.webclient.webclient.MessageContent;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +24,14 @@ public class MainController {
 
   private final PetrolStationClientService petrolStationClientService;
   private final GeocodingClientService geocodingClientService;
+  private final PushoverMessageClientService pushoverMessageClientService;
 
   public Flux<PetrolStation> findPetrolStations(@NonNull Geo geo) {
     return petrolStationClientService
         .getPetrolStationsInNeighbourhood(geo)
         .doOnNext(petrolStation -> log.debug(petrolStation.toString()))
         .doFinally(signal -> log
-            .debug("************* COMPLETED STATIONS signal: {} *************", signal));
+            .debug("************* Completed STATIONS signal: {} *************", signal));
   }
 
   public Mono<Geo> findGeoLocation(@NonNull Address address) {
@@ -36,7 +39,14 @@ public class MainController {
         .getGeoLocationForAddress(address)
         .doOnNext(geo -> log.debug(geo.toString()))
         .doFinally(signal -> log
-            .debug("************* COMPLETED GEO signal: {} *************", signal));
+            .debug("************* Completed GEO signal: {} *************", signal));
+  }
+
+  public Mono<Void> sendPushoverMessage(@NonNull MessageContent content) {
+    return pushoverMessageClientService
+        .sendMessage(content)
+        .doFinally(signal -> log
+            .debug("************* Completed PUSHOVER signal: {} *************", signal));
   }
 
   private String readJsonTest() {

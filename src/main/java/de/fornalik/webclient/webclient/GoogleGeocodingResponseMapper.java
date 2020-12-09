@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
+class GoogleGeocodingResponseMapper implements Converter<String, Mono<Geo>> {
 
   private final ObjectMapper mapper;
 

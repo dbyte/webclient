@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class TankerkoenigNeighbourhoodResponseMapper
-    implements Converter<String, Flux<PetrolStation>> {
+class TankerkoenigNeighbourhoodResponseMapper implements Converter<String, Flux<PetrolStation>> {
 
   private final ObjectMapper mapper;
 

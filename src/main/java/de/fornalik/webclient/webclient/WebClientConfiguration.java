@@ -1,31 +1,34 @@
-package de.fornalik.webclient;
+package de.fornalik.webclient.webclient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fornalik.webclient.webclient.GoogleGeocodingResponseMapper;
-import de.fornalik.webclient.webclient.TankerkoenigNeighbourhoodResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Configuration
-public class SpringWebclientConfiguration implements WebFluxConfigurer {
+class WebClientConfiguration implements WebFluxConfigurer {
 
-  @Autowired private ObjectMapper jsonMapper;
+  @Autowired private Jackson2ObjectMapperBuilder objectMapperBuilder;
 
   @Bean
-  TankerkoenigNeighbourhoodResponseMapper petrolStationsNeighbourhoodResponseConverter() {
-    return new TankerkoenigNeighbourhoodResponseMapper(jsonMapper);
+  TankerkoenigNeighbourhoodResponseMapper petrolStationsNeighbourhoodResponseMapper() {
+    return new TankerkoenigNeighbourhoodResponseMapper(objectMapperBuilder.build());
   }
 
   @Bean
   GoogleGeocodingResponseMapper googleGeocodingResponseMapper() {
-    return new GoogleGeocodingResponseMapper(jsonMapper);
+    return new GoogleGeocodingResponseMapper(objectMapperBuilder.build());
+  }
+
+  @Bean
+  PushoverMessageResponseMapper pushoverMessageResponseMapper() {
+    return new PushoverMessageResponseMapper(objectMapperBuilder.build());
   }
 
   @Bean
@@ -42,7 +45,8 @@ public class SpringWebclientConfiguration implements WebFluxConfigurer {
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
-    registry.addConverter(petrolStationsNeighbourhoodResponseConverter());
+    registry.addConverter(petrolStationsNeighbourhoodResponseMapper());
     registry.addConverter(googleGeocodingResponseMapper());
+    registry.addConverter(pushoverMessageResponseMapper());
   }
 }

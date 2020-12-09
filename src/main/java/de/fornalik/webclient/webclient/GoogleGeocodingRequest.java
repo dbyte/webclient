@@ -16,7 +16,7 @@ import java.util.Objects;
 @Qualifier("geocodingRequest")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-public class GoogleGeocodingRequest implements AddressRequest {
+class GoogleGeocodingRequest implements AddressRequest {
 
   private static final String STREET_KEY = "street";
   private static final String HOUSENUMBER_KEY = "houseNumber";

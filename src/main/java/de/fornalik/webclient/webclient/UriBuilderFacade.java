@@ -16,12 +16,16 @@ import java.util.Objects;
 @Component
 @Scope("prototype")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UriBuilderFacade {
+class UriBuilderFacade {
 
   private final MultiValueMap<String, String> parameterMap;
   private final UriBuilderFactory uriBuilderFactory;
   private String host;
   private String basePath;
+
+  MultiValueMap<String, String> getParameterMap() {
+    return parameterMap;
+  }
 
   UriBuilderFacade setHost(@NonNull String host) {
     this.host = Objects.requireNonNull(host, "host must not be null");
@@ -44,18 +48,22 @@ public class UriBuilderFacade {
   }
 
   URI build(@NonNull String template) {
-    return processPreBuild()
+    return computeBaseUri()
         .query(template)
         .build(parameterMap.toSingleValueMap());
   }
 
   URI build() {
-    return processPreBuild()
+    return computeBaseUri()
         .queryParams(parameterMap)
         .build();
   }
 
-  private UriBuilder processPreBuild() {
+  URI buildParameterless() {
+    return computeBaseUri().build();
+  }
+
+  private UriBuilder computeBaseUri() {
     return uriBuilderFactory.builder()
         .scheme("https")
         .host(host)

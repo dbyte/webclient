@@ -13,7 +13,7 @@ import java.net.URI;
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-public class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourhoodRequest {
+class TankerkoenigNeighbourhoodRequest implements PetrolStationNeighbourhoodRequest {
 
   private final UriBuilderFacade uriBuilderFacade;
   @Autowired @Value("${app.webclient.apikey.petrolstations:}") private String petrolStationApiKey;
