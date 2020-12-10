@@ -9,6 +9,7 @@ import de.fornalik.webclient.petrolstation.messaging.PetrolStationMessageContent
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -27,19 +28,27 @@ public class SpringWebclientApplication {
 
     // Request Petrol Station Webservice
     // Flux<PetrolStation> petrolStationFlux = Flux.empty();
-    Flux<PetrolStation> petrolStationFlux = mainController.findPetrolStations(demoData.getT1());
+    ConnectableFlux<PetrolStation> petrolStationFlux = mainController
+        .findPetrolStations(demoData.getT1())
+        .publish();
 
     // Request Geocoding Webservice
     // Mono<Geo> geoMono = Mono.empty();
     Mono<Geo> geoMono = mainController.findGeoLocation(demoData.getT2());
 
-    // Request Geocoding Webservice
-    MessageContent messageContent = PetrolStationMessageContentAdapter
-        .of(petrolStationFlux.blockLast());
-    Mono<Void> messageMono = mainController.sendPushoverMessage(messageContent);
+    // Send pushmessage with last PetrolStation content - defer until last occuring PetrolStation.
+    Mono<Void> messageMono = petrolStationFlux
+        .last()
+        .flatMap(station -> {
+          MessageContent messageContent = PetrolStationMessageContentAdapter.of(station);
+          return mainController.sendPushoverMessage(messageContent);
+        });
+
+    // Start hotstream (messageMono is listening to petrolStationFlux events)
+    petrolStationFlux.connect();
 
     // Shutdown after both streams have terminated.
-    Flux.concat(petrolStationFlux, geoMono, messageMono)
+    Flux.concat(messageMono, geoMono)
         .doFinally(signal -> context.stop())
         .subscribe(null, Throwable::printStackTrace);
   }
